@@ -7,4 +7,7 @@ Save-WebFile -SourceUrl $Vivetool -DestinationDirectory $destination
 
 Expand-Archive -Path $ZIP -DestinationPath $extract
 
+$ospath = "C:\OS\Windows11\sources\install.wim"
+$mount = Read-Host -Prompt 'Please enter your path to use as a Mount point'
+
 
