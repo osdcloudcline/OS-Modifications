@@ -238,7 +238,7 @@ Write-Host
 
 $HKCRREG1 = "Add Copy To Move To"
 
-reg load HKLM\OfflineSettings C:\WIMImages\Offline\Windows\System32\Config\Software
+reg load HKLM\OfflineSettings $mount\Windows\System32\Config\Software
 
 Write-Host "Importing $HKCRREG1...." -ForegroundColor Cyan
 Write-Host
@@ -318,7 +318,7 @@ reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\c
 
 reg unload HKLM\OfflineSettings
 
-reg load HKLM\OfflineSystem C:\WIMImages\Offline\Windows\System32\Config\System
+reg load HKLM\OfflineSystem $mount\Windows\System32\Config\System
 
 $HKSYSTEMREG1 = "Disable BitLocker Device Encryption"
 
