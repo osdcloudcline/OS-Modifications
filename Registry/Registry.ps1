@@ -316,6 +316,21 @@ reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\c
 reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cDefaultLaunchAttachmentPerms" /f
 reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cDefaultLaunchURLPerms" /f
 
+$HKLMREG2 = "Google Chrome AI"
+
+Write-Host "Importing $HKLMREG2..." -ForegroundColor Cyan
+Write-Host 
+Write-Verbose "Adding $HKLMREG2..." -Verbose
+
+:: 1. Disable on-device local AI models (stops Gemini Nano 4GB download)
+reg add "HKLM\SOFTWARE\Policies\Google\Chrome" /v "GenAILocalFoundationalModelSettings" /t REG_DWORD /d 1 /f
+
+:: 2. Disable generic Generative AI default settings
+reg add "HKLM\SOFTWARE\Policies\Google\Chrome" /v "GenAiDefaultSettings" /t REG_DWORD /d 2 /f
+
+:: 3. Disable AI Mode buttons/Omnibox integrations
+reg add "HKLM\SOFTWARE\Policies\Google\Chrome" /v "AIModeSettings" /t REG_DWORD /d 1 /f
+
 reg unload HKLM\OfflineSettings
 
 reg load HKLM\OfflineSystem $mount\Windows\System32\Config\System
