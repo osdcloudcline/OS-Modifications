@@ -14,7 +14,7 @@ $driveLetter = ($mountResult | Get-Volume).DriveLetter
 New-Item -Path $extract -ItemType Directory -Forc
 Copy-Item -Path "${driveLetter}:\*" -Destination $extract -Recurse -Force
 
-$ospath = "C:\OS\Windows11\sources\install.wim"
+$ospath = "Read-Host -Prompt 'Please enter your path where your extracted OS is'
 $mount = Read-Host -Prompt 'Please enter your path to use as a Mount point'
 
 $OSIso = Read-Host -Prompt 'Please enter path to your Windows 11 ISO File'
