@@ -7,7 +7,7 @@ Save-WebFile -SourceUrl $Vivetool -DestinationDirectory $destination
 
 Expand-Archive -Path $ZIP -DestinationPath $extract
 
-$ospath = "C:\OS\Windows11\sources\install.wim"
+$ospath = "Read-Host -Prompt 'Please enter your path where your extracted OS is'
 $mount = Read-Host -Prompt 'Please enter your path to use as a Mount point'
 
 
@@ -25,7 +25,7 @@ reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement
 cd "C:\downloads\Vivetool\extract"
 .\ViVeTool.exe /disable /id:47205210 /image:"$mount\Windows"
 
-Dismount-WindowsImage -Path "$mount" -Save
+Dismount-WindowsImage -Path $mount -Save
 
 $Index6 = "Windows 11 Enterprise 25H2"
 
@@ -41,7 +41,7 @@ reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement
 cd "C:\downloads\Vivetool\extract"
 .\ViVeTool.exe /disable /id:47205210 /image:"$mount\Windows"
 
-Dismount-WindowsImage -Path "$mount" -Save
+Dismount-WindowsImage -Path $mount -Save
 
 $Index12 = "Windows 11 Pro for Workstations 25H2"
 
@@ -57,4 +57,4 @@ reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement
 cd "C:\downloads\Vivetool\extract"
 .\ViVeTool.exe /disable /id:47205210 /image:"$mount\Windows"
 
-Dismount-WindowsImage -Path "$mount" -Save
+Dismount-WindowsImage -Path $mount -Save
