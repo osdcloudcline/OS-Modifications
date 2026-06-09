@@ -42,7 +42,7 @@ do
         Invoke-Expression $($Registry.Content)
         }   
   '5' { cls
-        $Updates = Invoke-WebRequest("")
+        $Updates = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Updates/Updates.ps1")
         Invoke-Expression $($Updates.Content)
         }
   '6' { cls
