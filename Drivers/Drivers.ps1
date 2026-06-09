@@ -181,59 +181,6 @@ Write-Host
 $Index = Read-Host -Prompt ' Select edition'
 
 ##########################################################
-# Prompt user for folder containing downloaded WU files
-# (*.cab and / or *.msu). Again, a 'while' loop is used to
-# check folder contains Windows Update files, if not user
-# is asked to check path and try again
-##########################################################
-
-$FileCount = 0
-while ($FileCount -eq 0) {
-cls
-Write-Host 
-Write-Host '  Enter path to folder containing driver'
-Write-Host '  *.inf files.'
-Write-Host 
-Write-Host '  Be sure to enter correct path / folder!'
-Write-Host                                                                       
-
-$DriverFolder = Read-Host -Prompt ' Path to folder containing driver files'
-
-if (Test-Path $DriverFolder)
-    {
-    $FileCount = (Get-ChildItem $DriverFolder\* -Include *.inf).Count
-    if ($FileCount -eq 0)
-        {
-        Write-Host
-        Write-Host ' No driver files found in given folder.' 
-        Write-Host ' Check the path and try again.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        pause
-        }
-    }
-    else
-        {
-        $FileCount = 0
-        cls
-        Write-Host
-        Write-Host ' Path'$DriverFolder 'does not exist.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        Pause
-        }
-  }
-$DriverFiles = Get-ChildItem -Path "$DriverFolder" -Recurse -Include *.inf, *.cat, *.sys, *.dll | Sort LastWriteTime 
-Write-Host
-Write-Host ' Found following' $FileCount 'Drivers files:'
-Write-Host
-ForEach ($File in $DriverFiles)
-    {Write-Host ' '$File}
-Write-Host
-Write-Host ' ' -NoNewline
-pause 
-
-##########################################################
 # Ask user which drive should be used for temporary 
 # working folder 'Mount'. If 'Mount' exists on selected
 # drive, delete and recreate it.
@@ -284,64 +231,29 @@ Write-Host
 Write-Host ' Image mounted, applying drivers.'
 Write-Host
 
-##########################################################
-# Prompt user for folder containing downloaded WU files
-# (*.cab and / or *.msu). Again, a 'while' loop is used to
-# check folder contains Windows Update files, if not user
-# is asked to check path and try again
-##########################################################
+$AudioDrivers = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
+$ChipsetDrivers = Read-Host -Prompt 'Please provide folder where chipset drivers are stored'
+$GPUDrivers = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
+$MonitorDrivers = Read-Host -Prompt 'Please provide folder where monitor drivers are stored'
+$NetworkDrivers = Read-Host -Prompt 'Please provide folder where network card drivers are stored' 
+$NPUDrivers = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
+$PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers are stored' 
+$StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
 
-$FileCount = 0
-while ($FileCount -eq 0) {
-cls
-Write-Host 
-Write-Host '  Enter path to folder containing driver'
-Write-Host '  *.inf files.'
-Write-Host 
-Write-Host '  Be sure to enter correct path / folder!'
-Write-Host                                                                       
-
-$DriverFolder = Read-Host -Prompt ' Path to folder containing driver files'
-
-if (Test-Path $DriverFolder)
-    {
-    $FileCount = (Get-ChildItem $DriverFolder\* -Include *.inf).Count
-    if ($FileCount -eq 0)
-        {
-        Write-Host
-        Write-Host ' No driver files found in given folder.' 
-        Write-Host ' Check the path and try again.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        pause
-        }
-    }
-    else
-        {
-        $FileCount = 0
-        cls
-        Write-Host
-        Write-Host ' Path'$DriverFolder 'does not exist.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        Pause
-        }
-  }
-$DriverFiles = Get-ChildItem -Path "$DriverFolder" -Recurse -Include *.inf, *.cat, *.sys, *.dll | Sort LastWriteTime 
-Write-Host
-Write-Host ' Found following' $FileCount 'Drivers files:'
-Write-Host
-ForEach ($File in $DriverFiles)
-    {Write-Host ' '$File}
-Write-Host
-Write-Host ' ' -NoNewline
-pause 
+$CPUQues = Read-Host -Prompt 'Do you have AMD or Intel CPU?'
+IF($CPUQues -eq "AMD"){ 
+$AMDCPU = Read-Host -Prompt 'Please provide folder where AMD CPU drivers are stored' 
+}elseif($CPUQues -eq "Intel"){
+$IntelCPU = Read-Host -Prompt 'Please provide folder where Intel CPU drivers are stored' 
+}
 
 ##########################################################
 # Write drivers one by one to Windows image. If OK, add
 # driver name to 'DriverSuccess.log' file,
 # if failed add to 'DriverFail.log'
 ##########################################################
+
+
 
 ForEach ($File in $DriverFiles)
     {dism /Image:$Mount /Add-Driver /driver:$DriverFolder /forceunsigned}  
@@ -412,242 +324,6 @@ if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log)
 ##########################################################
 
 if (Test-Path $Mount) {Remove-Item $Mount}
-
-##########################################################
-# Prompt user for path to install media (USB drive) or 
-# folder where ISO content was copied to.
-#
-# Using 'while' loop to check that source given by user 
-# contains a Windows image, if not user is asked to chek
-# path and try again
-##########################################################
-
-$WimCount = 0
-while ($WimCount -eq 0) {
-cls
-Write-Host 
-Write-Host ' Enter source path. In case you are using a plugged in USB flash'
-Write-Host ' drive, simply enter its drive letter followed by : (colon).'
-Write-Host
-Write-Host ' If the source you are using is a Windows 10 ISO or DVD, enter.'
-Write-Host ' path to folder where you copied ISO / DVD content.'
-Write-Host 
-Write-Host ' Notice please: If your source contains both 32 (x86) and 64 (x64)'
-Write-Host ' bit versions, add \x86 or \x64 to source depending on which'
-Write-Host ' bit version you want to update.'
-Write-Host 
-Write-Host ' Examples:'
-Write-Host ' - A USB drive, enter its drive letter with colon (D: or F:)'
-Write-Host ' - A USB drive with both bit versions, enter D:\x86 or D:\x64'
-Write-Host ' - ISO files copied to folder, enter path (D:\ISO_Files)'
-Write-Host ' - Dual bit version ISO copied to folder, enter path with bit version'
-Write-Host '   (W:\MyISOFolder\x86 or W:\MyISOFolder\x64)' 
-Write-Host
-
-$ISOFolder1 = Read-Host -Prompt ' Enter source, press Enter'
-$WimFolder1 = $ISOFolder1
-   
-    if (Test-Path $WimFolder1\Sources\boot.wim)
-        {
-        $WimCount = 1
-            if (($WIMFolder1 -match "x86") -or ($WIMFolder1 -match "x64"))
-            {
-            $ISOFolder1 = $ISOFolder1 -replace "....$" 
-            }
-        }
-    elseif (Test-Path $WimFolder1)
-        {
-        $WimCount = 0
-        cls
-        Write-Host
-        Write-Host ' No Windows image (boot.wim file) found'
-        Write-Host ' Please check path and try again.'
-        Write-Host
-        Pause
-        }
-    else
-        {
-        $FileCount = 0
-        cls
-        Write-Host
-        Write-Host ' Path'$ISOFolder1 'does not exist.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        Pause
-        }
-    }
-
-$WimFile1 = Join-Path $WimFolder1 '\Sources\boot.wim'
-
-##########################################################
-# Prompt user for folder containing downloaded WU files
-# (*.cab and / or *.msu). Again, a 'while' loop is used to
-# check folder contains Windows Update files, if not user
-# is asked to check path and try again
-##########################################################
-
-$FileCount = 0
-while ($FileCount -eq 0) {
-cls
-Write-Host 
-Write-Host '  Enter path to folder containing driver'
-Write-Host '  *.inf files.'
-Write-Host 
-Write-Host '  Be sure to enter correct path / folder!'
-Write-Host                                                                       
-
-$DriverFolder2 = Read-Host -Prompt ' Path to folder containing boot driver files'
-
-if (Test-Path $DriverFolder2)
-    {
-    $FileCount = (Get-ChildItem $DriverFolder2\* -Include *.inf).Count
-    if ($FileCount -eq 0)
-        {
-        Write-Host
-        Write-Host ' No driver files found in given folder.' 
-        Write-Host ' Check the path and try again.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        pause
-        }
-    }
-    else
-        {
-        $FileCount = 0
-        cls
-        Write-Host
-        Write-Host ' Path'$DriverFolder2 'does not exist.'
-        Write-Host
-        Write-Host ' ' -NoNewline
-        Pause
-        }
-  }
-
-  ##########################################################
-# Ask user which drive should be used for temporary 
-# working folder 'Mount'. If 'Mount' exists on selected
-# drive, delete and recreate it.
-##########################################################
-
-cls
-Write-Host
-[System.IO.DriveInfo]::GetDrives() | Where-Object {$_.DriveType -eq 'Fixed'} | Format-Table @{n='Drive ID';e={($_.Name)}}, @{n='Label';e={($_.VolumeLabel)}}, @{n='Free (GB)';e={[int]($_.AvailableFreeSpace/1GB)}}
-Write-Host
-Write-Host ' Above is a list of all hard disk partitions showing available'
-Write-Host ' free space on each of them. Select a partition for temporary'
-Write-Host ' folder to mount Windows image. Selected partition must have at'
-Write-Host ' least 15 GB available free space. Folder will be removed when'
-Write-Host ' image has been updated.'
-Write-Host
-$Drive = Read-Host -Prompt ' Enter drive letter and press Enter'
-$Mount = $Drive.SubString(0,1) + ':\BootWIMMount'
-
-if (Test-Path $Mount1) {Remove-Item $Mount1}
-$Mount1 = New-Item -ItemType Directory -Path $Mount1
-
-##########################################################
-# Mount Windows image in temporary mount folder.
-#
-# Adding eight empty lines to $EmptySpace variable to be
-# used as placeholder to push output below PowerShell
-# progressbar which is shown on top. Five empty lines would
-# be enough for PowerShell ISE but standard PowerShell will
-# need eight lines, otherwise output remains hidden
-##########################################################
-
-cls
-$EmptySpace = @"
-
-
-
-  
- 
-
-
-
-"@
-
-Write-Host $EmptySpace
-Write-Host ' Mounting Windows image. This will take a few minutes.'
-Mount-WindowsImage -ImagePath $WimFolder\Sources\boot.wim -Index $Index -Path $Mount1 | Out-Null
-Write-Host
-Write-Host ' Image mounted, applying drivers.'
-Write-Host
-
-##########################################################
-# Write drivers one by one to Windows image. If OK, add
-# driver name to 'DriverSuccess.log' file,
-# if failed add to 'DriverFail.log'
-##########################################################
-
-ForEach ($File in $DriverFiles2)
-    {dism /Image:$Mount1 /Add-Driver /Driver:$DriverFolder2 /Recurse /ForceUnsigned} 
-    Write-Host ' Applying'$File
-    {
-    if ($? -eq $TRUE)
-        {$File.Name | Out-File -FilePath C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log -Append}
-     else     
-        {$File.Name | Out-File -FilePath C:\OSDCloud\Logs\OSDrivers\DriverFail.log -Append}
-    }
-
-##########################################################
-# Dismount Windows image saving updated boot.wim. Using
-# $EmptySpace variable again to push output from under
-# PowerShell progressbar to visible area under it
-##########################################################
-
-cls
-Write-Host $EmptySpace
-Write-Host ' Dismounting Windows image, saving updated boot.wim.'
-Write-Host ' This will take a minute or two.'
-Dismount-WindowsImage -Path $Mount -Save | Out-Null
-cls
-
-##########################################################
-# Show drivers added to Windows image
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log)
-    {
-    Write-Host
-    Write-Host ' Following drivers successfully added to Windows image: '
-    Write-Host
-    $LogContent = Get-Content 'C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log'
-    foreach ($Line in $LogContent)
-        {Write-Host ' - '$Line}
-    } 
-    else
-    {
-    Write-Host
-    Write-Host ' All drivers failed, nothing added to Windows image.'
-    Write-Host
-    Write-Host ' ' -NoNewline
-    pause
-    exit
-    }
-
-##########################################################
-# Show failed drivers
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log)
-    {
-    Write-Host
-    Write-Host ' Following drivers could not be added to Windows image: '
-    $LogContent = Get-Content 'C:\OSDCloud\Logs\OSDrivers\DriverFail.log'
-    foreach ($Line in $LogContent)
-        {Write-Host ' - '$Line}
-    } 
-    else
-    {
-    Write-Host
-    Write-Host ' No failed drivers.'}
-
-##########################################################
-# Delete temporary mount folder
-##########################################################
-
-if (Test-Path $Mount1) {Remove-Item $Mount1}
 
 ##########################################################
 # End credits
