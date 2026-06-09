@@ -42,7 +42,7 @@ cls
 Get-WindowsImage -ImagePath $WimFile | Format-Table ImageIndex, ImageName
 Write-Host 
 Write-Host ' The install.wim file contains above listed Windows editions.'
-Write-Host ' Which edition should be updated?'
+Write-Host ' Which edition should be extracted?'
 Write-Host  
 Write-Host ' Enter the ImageIndex number of correct edition and press Enter.'
 Write-Host ' If this is a single edition Windows image, enter 1.'                                                                     
@@ -50,10 +50,10 @@ Write-Host
 $Index = Read-Host -Prompt ' Select edition'
 
 $ExportWIMFileName = Read-Host -Prompt 'Please specify a file name for the exported WIM file, including the file extension (EG: Windows11ProWorkstations.wim)'
-$DescriptionName = Read-Host -Prompt 'Please enter a descriptive name for the image'
+$DestinationName = Read-Host -Prompt 'Please enter a descriptive name for the image'
 
 Write-Host "Processing: Exporting selected WIM File" -ForegroundColor Cyan
 Write-Host
-Export-WindowsImage -SourceImagePath "$WIMFile" -SourceIndex $Index -DestinationImagePath "$Destination\$ExportWIMFileName" -DescriptionName "$DescriptionName" 
+Export-WindowsImage -SourceImagePath "$WIMFile" -SourceIndex $Index -DestinationImagePath "$Destination\$ExportWIMFileName" -DestinationName "$DestinationName" 
 Write-Host
 Write-Host "WIM File successfully extracted to: $Destination" -ForegroundColor Green 
