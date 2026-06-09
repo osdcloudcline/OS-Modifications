@@ -1,3 +1,5 @@
+Function Show-WIMExtract(){
+
 $ISOFolder = Read-Host -Prompt 'Please enter the source directory'
 $WimFolder = $ISOFolder
 $Destination = Read-Host -Prompt 'Please enter destination path for extracted WIM File'
@@ -57,3 +59,12 @@ Write-Host
 Export-WindowsImage -SourceImagePath "$WIMFile" -SourceIndex $Index -DestinationImagePath "$Destination\$ExportWIMFileName" -DestinationName "$DestinationName" 
 Write-Host
 Write-Host "WIM File successfully extracted to: $Destination" -ForegroundColor Green 
+}
+
+$OSExtract = Read-Host -Prompt 'Do you want to extract another OS Image?'
+If(($OSExtract -eq "Y") -or ($OSExtract -eq "y") -or ($OSExtract -eq "YES") -or ($OSExtract -eq "yes")){
+Show-WIMExtract
+}elseif(($OSExtract -eq "N") -or ($OSExtract -eq "n") -or ($OSExtract -eq "NO") -or ($OSExtract -eq "no")){
+Write-Host "Extraction process has completed" -ForegroundColor Cyan
+
+Show-WIMExtract
