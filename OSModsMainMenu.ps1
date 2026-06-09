@@ -25,7 +25,7 @@ do
         Invoke-Expression $($Drivers.Content)
         }
   '2' { cls
-        $FeaturesSM = Invoke-WebRequest("https://github.com/osdcloudcline/OSDCloud/raw/refs/heads/main/Scripts/ISO%20Files/Workspace%20Creation%20Scripts/Motherboards/AMD/Socket%20AM5/MainMenu.ps1")
+        $FeaturesSM = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Features/Client%20OS%20Features/Disable-NewStartMenu.ps1")
         Invoke-Expression $($FeaturesSM.Content)
 
         pause
