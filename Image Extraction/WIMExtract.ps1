@@ -31,8 +31,6 @@ if (Test-Path $WimFolder\Sources\install.wim)
         Write-Host ' ' -NoNewline
         Pause
         }
-    }
-
 $WimFile = Join-Path $WimFolder '\Sources\install.wim'
 
 ##########################################################
