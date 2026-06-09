@@ -1,5 +1,7 @@
 $ISOFolder = Read-Host -Prompt 'Please enter the source directory'
 $WimFolder = $ISOFolder
+$Destination = Read-Host -Prompt 'Please enter destination path for extracted WIM File'
+
 
 if (Test-Path $WimFolder\Sources\install.wim)
         {
@@ -33,3 +35,27 @@ if (Test-Path $WimFolder\Sources\install.wim)
 
 $WimFile = Join-Path $WimFolder '\Sources\install.wim'
 
+##########################################################
+# List Windows editions on image, prompt user for
+# edition to be updated
+##########################################################
+
+cls
+Get-WindowsImage -ImagePath $WimFile | Format-Table ImageIndex, ImageName
+Write-Host 
+Write-Host ' The install.wim file contains above listed Windows editions.'
+Write-Host ' Which edition should be updated?'
+Write-Host  
+Write-Host ' Enter the ImageIndex number of correct edition and press Enter.'
+Write-Host ' If this is a single edition Windows image, enter 1.'                                                                     
+Write-Host
+$Index = Read-Host -Prompt ' Select edition'
+
+$ExportWIMFileName = Read-Host -Prompt 'Please specify a file name for the exported WIM file, including the file extension (EG: Windows11ProWorkstations.wim)'
+$DescriptionName = Read-Host -Prompt 'Please enter a descriptive name for the image'
+
+Write-Host "Processing: Exporting selected WIM File" -ForegroundColor Cyan
+Write-Host
+Export-WindowsImage -SourceImagePath "$WIMFile" -SourceIndex $Index -DestinationImagePath "$Destination\$ExportWIMFileName" -DescriptionName "$DescriptionName" 
+Write-Host
+Write-Host "WIM File successfully extracted to: $Destination" -ForegroundColor Green 
