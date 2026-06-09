@@ -25,8 +25,13 @@ do
         Invoke-Expression $($Drivers.Content)
         }
   '2' { cls
-        $Features = Invoke-WebRequest("https://github.com/osdcloudcline/OSDCloud/raw/refs/heads/main/Scripts/ISO%20Files/Workspace%20Creation%20Scripts/Motherboards/AMD/Socket%20AM5/MainMenu.ps1")
-        Invoke-Expression $($Features.Content)
+        $FeaturesSM = Invoke-WebRequest("https://github.com/osdcloudcline/OSDCloud/raw/refs/heads/main/Scripts/ISO%20Files/Workspace%20Creation%20Scripts/Motherboards/AMD/Socket%20AM5/MainMenu.ps1")
+        Invoke-Expression $($FeaturesSM.Content)
+
+        pause
+
+        $FeaturesRSAT = Invoke-WebRequest("https://github.com/osdcloudcline/OSDCloud/raw/refs/heads/main/Scripts/ISO%20Files/Workspace%20Creation%20Scripts/Motherboards/AMD/Socket%20AM5/MainMenu.ps1")
+        Invoke-Expression $($FeaturesRSAT.Content)
         }
   '3' { cls
         $ExtractWIM = Invoke-WebRequest("https://github.com/osdcloudcline/OSDCloud/raw/refs/heads/main/Scripts/ISO%20Files/Workspace%20Creation%20Scripts/Motherboards/Intel/Socket%20LGA1700/MainMenu.ps1")
