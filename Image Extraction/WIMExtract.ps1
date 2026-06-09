@@ -66,5 +66,6 @@ If(($OSExtract -eq "Y") -or ($OSExtract -eq "y") -or ($OSExtract -eq "YES") -or 
 Show-WIMExtract
 }elseif(($OSExtract -eq "N") -or ($OSExtract -eq "n") -or ($OSExtract -eq "NO") -or ($OSExtract -eq "no")){
 Write-Host "Extraction process has completed" -ForegroundColor Cyan
+}
 
 Show-WIMExtract
