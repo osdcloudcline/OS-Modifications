@@ -301,11 +301,11 @@ Write-Host
 Write-Host '  Be sure to enter correct path / folder!'
 Write-Host                                                                       
 
-$DriverFolder1 = Read-Host -Prompt ' Path to folder containing driver files'
+$DriverFolder = Read-Host -Prompt ' Path to folder containing driver files'
 
-if (Test-Path $DriverFolder1)
+if (Test-Path $DriverFolder)
     {
-    $FileCount = (Get-ChildItem $DriverFolder1\* -Include *.inf).Count
+    $FileCount = (Get-ChildItem $DriverFolder\* -Include *.inf).Count
     if ($FileCount -eq 0)
         {
         Write-Host
@@ -321,13 +321,13 @@ if (Test-Path $DriverFolder1)
         $FileCount = 0
         cls
         Write-Host
-        Write-Host ' Path'$DriverFolder1 'does not exist.'
+        Write-Host ' Path'$DriverFolder 'does not exist.'
         Write-Host
         Write-Host ' ' -NoNewline
         Pause
         }
   }
-$DriverFiles = Get-ChildItem -Path "$DriverFolder1" -Recurse -Include *.inf, *.cat, *.sys, *.dll | Sort LastWriteTime 
+$DriverFiles = Get-ChildItem -Path "$DriverFolder" -Recurse -Include *.inf, *.cat, *.sys, *.dll | Sort LastWriteTime 
 Write-Host
 Write-Host ' Found following' $FileCount 'Drivers files:'
 Write-Host
@@ -343,8 +343,8 @@ pause
 # if failed add to 'DriverFail.log'
 ##########################################################
 
-ForEach ($File in $DriverFiles1)
-    {dism /Image:$Mount /Add-Driver /driver:$DriverFolder1 /forceunsigned}  
+ForEach ($File in $DriverFiles)
+    {dism /Image:$Mount /Add-Driver /driver:$DriverFolder /forceunsigned}  
     Write-Host ' Applying'$File
     {
     if ($? -eq $TRUE)
