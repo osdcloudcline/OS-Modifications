@@ -69,5 +69,4 @@ Write-Host "Extraction process has completed" -ForegroundColor Cyan
 }
 }
 
-
 Show-WIMExtract
