@@ -682,5 +682,8 @@ Write-Host
 
 
 ##########################################################
+
+$Main = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/OSModsMainMenu.ps1")
+Invoke-Expression $($Main.Content)
 # End of script
 ##########################################################
