@@ -34,7 +34,7 @@ do
         Invoke-Expression $($FeaturesRSAT.Content)
         }
   '3' { cls
-        $ExtractWIM = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Features/Client%20OS%20Features/Offline-RSAT-Integration.ps1")
+        $ExtractWIM = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Image%20Extraction/WIMExtract.ps1")
         Invoke-Expression $($ExtractWIM.Content)
         }
   '4' { cls
