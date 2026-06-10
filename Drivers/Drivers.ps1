@@ -244,7 +244,7 @@ $PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers
 $StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
 $CPUQues        = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
 
-# Combines all separate paths into one array variable
+# Combine into an array (Removes accidental leading/trailing spaces, skips blanks)
 $AllIntelDrivers = @(
     $AudioDrivers
     $ChipsetDrivers
@@ -255,7 +255,7 @@ $AllIntelDrivers = @(
     $PrinterDrivers
     $StorageDrivers
     $CPUQues
-)
+).Trim().Where({$_ -ne ""})
 
 
 ##########################################################
@@ -266,16 +266,26 @@ $AllIntelDrivers = @(
 
 
 
-ForEach ($File in $AllIntelDrivers)
-    {dism /Image:$Mount /Add-Driver /driver:$AllIntelDrivers /forceunsigned}  
-    Write-Host ' Applying'$File
-    {
-    if ($? -eq $TRUE)
-        {$File.Name | Out-File -FilePath C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log -Append}
-     else     
-        {$File.Name | Out-File -FilePath C:\OSDCloud\Logs\OSDrivers\DriverFail.log -Append}
-        break
+foreach ($File in $AllIntelDrivers) {
+    # Visual anchor for tracking progress
+    Write-Host "Applying drivers from: $File" -ForegroundColor Cyan
+
+    # FIX 1: Pass "$File" instead of the whole array.
+    # FIX 2: Wrap "$Mount" and "$File" in double quotes to handle folder spaces safely.
+    dism.exe /Image:"$Mount" /Add-Driver /driver:"$File" /Recurse /ForceUnsigned
+
+    # FIX 3: Check execution status immediately after the command runs
+    if ($LASTEXITCODE -eq 0) {
+        # FIX 4: $File is a plain string path, so use Split-Path to extract just the folder name
+        $FolderName = Split-Path $File -Leaf
+        $FolderName | Out-File -FilePath "C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log" -Append
+    } else {
+        $FolderName = Split-Path $File -Leaf
+        $FolderName | Out-File -FilePath "C:\OSDCloud\Logs\OSDrivers\DriverFail.log" -Append
     }
+    
+    # FIX 5: Removed 'break' so the script continues to the next driver folder!
+}
     
 ##########################################################
 # Dismount Windows image saving updated install.wim. Using
