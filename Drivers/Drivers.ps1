@@ -234,15 +234,28 @@ Write-Host
 Write-Host ' Image mounted, applying drivers.'
 Write-Host
 
-$AudioDrivers = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
+$AudioDrivers   = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
 $ChipsetDrivers = Read-Host -Prompt 'Please provide folder where chipset drivers are stored'
-$GPUDrivers = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
+$GPUDrivers     = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
 $MonitorDrivers = Read-Host -Prompt 'Please provide folder where monitor drivers are stored'
 $NetworkDrivers = Read-Host -Prompt 'Please provide folder where network card drivers are stored' 
-$NPUDrivers = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
+$NPUDrivers     = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
 $PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers are stored' 
 $StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
-$CPUQues = Read-Host -Prompt 'Please provide folder where CPUdrivers are stored' 
+$CPUQues        = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
+
+# Combines all separate paths into one array variable
+$AllIntelDrivers = @(
+    $AudioDrivers
+    $ChipsetDrivers
+    $GPUDrivers
+    $MonitorDrivers
+    $NetworkDrivers
+    $NPUDrivers
+    $PrinterDrivers
+    $StorageDrivers
+    $CPUQues
+)
 
 
 ##########################################################
@@ -253,8 +266,8 @@ $CPUQues = Read-Host -Prompt 'Please provide folder where CPUdrivers are stored'
 
 
 
-ForEach ($File in $DriverFiles)
-    {dism /Image:$Mount /Add-Driver /driver:$DriverFolder /forceunsigned}  
+ForEach ($File in $AllIntelDrivers)
+    {dism /Image:$Mount /Add-Driver /driver:$AllIntelDrivers /forceunsigned}  
     Write-Host ' Applying'$File
     {
     if ($? -eq $TRUE)
@@ -541,15 +554,28 @@ Write-Host
 Write-Host ' Image mounted, applying drivers.'
 Write-Host
 
-$AudioDrivers = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
+$AudioDrivers   = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
 $ChipsetDrivers = Read-Host -Prompt 'Please provide folder where chipset drivers are stored'
-$GPUDrivers = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
+$GPUDrivers     = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
 $MonitorDrivers = Read-Host -Prompt 'Please provide folder where monitor drivers are stored'
 $NetworkDrivers = Read-Host -Prompt 'Please provide folder where network card drivers are stored' 
-$NPUDrivers = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
+$NPUDrivers     = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
 $PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers are stored' 
 $StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
-$CPUQues = Read-Host -Prompt 'Please provide folder where CPUdrivers are stored' 
+$CPUQues        = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
+
+# Combines all separate paths into one array variable
+$AllAMDDrivers = @(
+    $AudioDrivers
+    $ChipsetDrivers
+    $GPUDrivers
+    $MonitorDrivers
+    $NetworkDrivers
+    $NPUDrivers
+    $PrinterDrivers
+    $StorageDrivers
+    $CPUQues
+)
 
 ##########################################################
 # Write drivers one by one to Windows image. If OK, add
@@ -560,7 +586,7 @@ $CPUQues = Read-Host -Prompt 'Please provide folder where CPUdrivers are stored'
 
 
 ForEach ($File in $DriverFiles)
-    {dism /Image:$Mount /Add-Driver /driver:$DriverFolder /forceunsigned}  
+    {dism /Image:$Mount /Add-Driver /driver:$AllAMDDrivers /forceunsigned}  
     Write-Host ' Applying'$File
     {
     if ($? -eq $TRUE)
