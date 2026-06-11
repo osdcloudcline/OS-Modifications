@@ -37,7 +37,7 @@ Dismount-WindowsImage -Path $mount -Save
 $Index6 = "Windows 11 Enterprise 25H2"
 
 Write-Host "Processing: $Index6" -ForegroundColor Cyan
-Mount-WindowsImage -ImagePath $ospath -Index 3 -Path $mount
+Mount-WindowsImage -ImagePath $ospath -Index 6 -Path $mount
 Write-Host
 Write-Host "Processing: Windows RSAT Tools" -ForegroundColor Cyan
 Get-WindowsCapability -Path $mount -Name RSAT*| Add-WindowsCapability -Path $mount -LimitAccess -Source $extract
@@ -48,7 +48,7 @@ Dismount-WindowsImage -Path $mount -Save
 $Index12 = "Windows 11 Pro for Workstations 25H2"
 
 Write-Host "Processing: $Index12" -ForegroundColor Cyan
-Mount-WindowsImage -ImagePath $ospath -Index 3 -Path $mount
+Mount-WindowsImage -ImagePath $ospath -Index 12 -Path $mount
 Write-Host
 Write-Host "Processing: Windows RSAT Tools" -ForegroundColor Cyan
 Get-WindowsCapability -Path $mount -Name RSAT*| Add-WindowsCapability -Path $mount -LimitAccess -Source $extract
