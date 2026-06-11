@@ -234,6 +234,11 @@ Write-Host
 Write-Host ' Image mounted, applying drivers.'
 Write-Host
 
+
+Write-Host "WARNING: Please select source folders of your drivers, rather putting them in a flat directory or problems may occur!" - ForegroundColor Red 
+Write-Host
+Write-Host 
+
 $AudioDrivers   = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
 $ChipsetDrivers = Read-Host -Prompt 'Please provide folder where chipset drivers are stored'
 $GPUDrivers     = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
