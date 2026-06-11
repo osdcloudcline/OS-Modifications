@@ -239,28 +239,45 @@ Write-Host "WARNING: Please select source folders of your drivers, rather puttin
 Write-Host
 Write-Host 
 
-$AudioDrivers   = Read-Host -Prompt 'Please provide folder where audio drivers are stored'
-$ChipsetDrivers = Read-Host -Prompt 'Please provide folder where chipset drivers are stored'
-$GPUDrivers     = Read-Host -Prompt 'Please provide folder where graphics card drivers are stored'
-$MonitorDrivers = Read-Host -Prompt 'Please provide folder where monitor drivers are stored'
-$NetworkDrivers = Read-Host -Prompt 'Please provide folder where network card drivers are stored' 
-$NPUDrivers     = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
-$PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers are stored' 
-$StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
-$CPUQues        = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
+# Define the categories and whether they accept multiple folders
+$DriverSchema = @(
+    @{ Name = "Audio";       Multi = $false; Prompt = "audio drivers" }
+    @{ Name = "Chipset";    Multi = $true;  Prompt = "chipset drivers" }
+    @{ Name = "Graphics";   Multi = $true;  Prompt = "graphics card drivers" }
+    @{ Name = "Monitor";    Multi = $true;  Prompt = "monitor drivers" }
+    @{ Name = "Network";    Multi = $true;  Prompt = "network card drivers" }
+    @{ Name = "NPU";        Multi = $false; Prompt = "NPU drivers" }
+    @{ Name = "Printer";    Multi = $false; Prompt = "printer drivers" }
+    @{ Name = "Storage";    Multi = $false; Prompt = "storage drivers" }
+    @{ Name = "CPU";        Multi = $true;  Prompt = "CPU drivers" }
+)
 
-# Combine into an array (Removes accidental leading/trailing spaces, skips blanks)
-$AllIntelDrivers = @(
-    $AudioDrivers
-    $ChipsetDrivers
-    $GPUDrivers
-    $MonitorDrivers
-    $NetworkDrivers
-    $NPUDrivers
-    $PrinterDrivers
-    $StorageDrivers
-    $CPUQues
-).Trim().Where({$_ -ne ""})
+# Initialize an empty array list to gather paths dynamically
+$AllIntelDrivers = [System.Collections.Generic.List[string]]::new()
+
+Write-Host "--- OSDCloud Driver Path Collection ---" -ForegroundColor Yellow
+Write-Host "Press [Enter] without typing a path to skip or finish a category.`n" -ForegroundColor Gray
+
+# Loop through each driver category dynamically
+foreach ($Category in $DriverSchema) {
+    if ($Category.Multi) {
+        $Index = 1
+        while ($true) {
+            $InputPath = (Read-Host -Prompt "Please provide folder where $($Category.Prompt) ($Index) are stored").Trim()
+            
+            # Break loop if user hits Enter on a blank line
+            if ([string]::IsNullOrWhiteSpace($InputPath)) { break }
+            
+            $AllIntelDrivers.Add($InputPath)
+            $Index++
+        }
+    } else {
+        $InputPath = (Read-Host -Prompt "Please provide folder where $($Category.Prompt) are stored").Trim()
+        if (-not [string]::IsNullOrWhiteSpace($InputPath)) {
+            $AllIntelDrivers.Add($InputPath)
+        }
+    }
+}
 
 
 ##########################################################
