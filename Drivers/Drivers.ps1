@@ -250,6 +250,7 @@ $DriverSchema = @(
     @{ Name = "Printer";    Multi = $false; Prompt = "printer drivers" }
     @{ Name = "Storage";    Multi = $false; Prompt = "storage drivers" }
     @{ Name = "CPU";        Multi = $true;  Prompt = "CPU drivers" }
+    @{ Name = "Virtualization";      Multi = $true;  Prompt = "Virtualization drivers" }
 )
 
 # Initialize an empty array list to gather paths dynamically
