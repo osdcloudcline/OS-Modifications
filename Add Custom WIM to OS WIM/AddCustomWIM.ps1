@@ -11,7 +11,7 @@ Function Show-CustomExport(){
 
     Write-Host "Adding custom image to WIM" -ForegroundColor Cyan
   
-    Export-WindowsImage -SourceImagePath "$WIMSource" -SourceIndex 1 -DestinationImagePath "$WIMDestination" -CompressionType Maximum -CheckIntegrity
+    Export-WindowsImage -SourceImagePath $WIMSource -SourceIndex 1 -DestinationImagePath $WIMDestination -CompressionType Maximum -CheckIntegrity
 
     
     $WIMQuestion = Read-Host -Prompt 'Do you want to add another CUSTOM image to the install.wim file?'
