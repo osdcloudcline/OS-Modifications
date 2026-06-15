@@ -8,17 +8,17 @@ $CompressionType   = "max"                            # Options: max, fast, or n
 
 
 
-Write-Host "The Source Image Location prompt is the CUSTOM Windows image WIM file you are exporting" -ForegroundColor Red
+Write-Host "The Source Image Location prompt is the CUSTOM Windows image WIM file you are exporting" -ForegroundColor Cyan 
 Write-Host
-Write-Host "The Destination Image Location prompt is the actual Windows install.wim file you are exporting to CUSTOM image TO!" -ForegroundColor Red
+Write-Host "The Destination Image Location prompt is the actual Windows install.wim file you are exporting to CUSTOM image TO!" -ForegroundColor Cyan
 Write-Host
 
 
 
 Function Show-CustomExport(){
-    # Clean input paths of spaces and quotes automatically
-    $WIMSource = (Read-Host -Prompt 'Please enter the source image file location').Trim(" '`"")
-    $WIMDestination = (Read-Host -Prompt 'Please enter destination path for extracted WIM File').Trim(" '`"")
+    
+    $WIMSource = (Read-Host -Prompt 'Please enter the source image file location'
+    $WIMDestination = (Read-Host -Prompt 'Please enter destination path for extracted WIM File'
 
     # Validate that the source file actually exists
     if (-not (Test-Path -Path $WIMSource)) {
@@ -39,7 +39,7 @@ Function Show-CustomExport(){
 }
 
 Function Show-WIMInfo(){
-    $WIMInfo = (Read-Host -Prompt 'Please enter the location for the Windows install.wim file').Trim(" '`"")
+    $WIMInfo = (Read-Host -Prompt 'Please enter the location for the Windows install.wim file'
     if (Test-Path -Path $WIMInfo) {
         Get-WindowsImage -ImagePath $WIMInfo
     } else {
