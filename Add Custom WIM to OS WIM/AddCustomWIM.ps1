@@ -6,28 +6,34 @@ Write-Host
 
 
 Function Show-CustomExport(){
-    $WIMSource = Read-Host -Prompt 'Please enter the source image file location'
-    $WIMDestination = Read-Host -Prompt 'Please enter destination path for extracted WIM File'
+    # Clean input paths of spaces and quotes automatically
+    $WIMSource = (Read-Host -Prompt 'Please enter the source image file location').Trim(" '`"")
+    $WIMDestination = (Read-Host -Prompt 'Please enter destination path for extracted WIM File').Trim(" '`"")
 
-    Write-Host "Adding custom image to WIM" -ForegroundColor Cyan
-  
+    # Validate that the source file actually exists
+    if (-not (Test-Path -Path $WIMSource)) {
+        Write-Host "Error: Source file does not exist at $WIMSource" -ForegroundColor Red
+        return
+    }
+
+    Write-Host "Adding custom image to WIM..." -ForegroundColor Cyan
     Export-WindowsImage -SourceImagePath $WIMSource -SourceIndex 1 -DestinationImagePath $WIMDestination -CompressionType Maximum -CheckIntegrity
 
-    
     $WIMQuestion = Read-Host -Prompt 'Do you want to add another CUSTOM image to the install.wim file?'
-    
-  
-    If(($WIMQuestion -eq "YES") -or ($WIMQuestion -eq "yes") -or ($WIMQuestion -eq "Y") -or ($WIMQuestion -eq "y")){
+    if ($WIMQuestion -in 'YES', 'yes', 'Y', 'y'){
         Show-CustomExport
-    }
-    elseif(($WIMQuestion -eq "NO") -or ($WIMQuestion -eq "no") -or ($WIMQuestion -eq "N") -or ($WIMQuestion -eq "n")){
+    } elseif ($WIMQuestion -in 'NO', 'no', 'N', 'n'){
         Show-WIMInfo
     }
 }
 
 Function Show-WIMInfo(){
-    $WIMInfo = Read-Host -Prompt 'Please enter the location for the Windows install.wim file'
-    Get-WindowsImage -ImagePath $WIMInfo
+    $WIMInfo = (Read-Host -Prompt 'Please enter the location for the Windows install.wim file').Trim(" '`"")
+    if (Test-Path -Path $WIMInfo) {
+        Get-WindowsImage -ImagePath $WIMInfo
+    } else {
+        Write-Host "File not found." -ForegroundColor Red
+    }
 }
 
 Show-CustomExport
