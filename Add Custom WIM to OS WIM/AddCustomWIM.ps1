@@ -19,7 +19,8 @@ Function Show-CustomExport(){
   
     If(($WIMQuestion -eq "YES") -or ($WIMQuestion -eq "yes") -or ($WIMQuestion -eq "Y") -or ($WIMQuestion -eq "y")){
         Show-CustomExport
-    }elseif(($WIMQuestion -eq "NO") -or ($WIMQuestion -eq "no") -or ($WIMQuestion -eq "N") -or ($WIMQuestion -eq "n")){
+    }
+    elseif(($WIMQuestion -eq "NO") -or ($WIMQuestion -eq "no") -or ($WIMQuestion -eq "N") -or ($WIMQuestion -eq "n")){
         Show-WIMInfo
     }
 }
