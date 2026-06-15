@@ -1,3 +1,14 @@
+# -----------------------------
+# VARIABLES
+# -----------------------------
+$CustomWimPath     = $WIMSource
+$CustomWimIndex    = 1                                # The index of your custom WIM to export
+$DestinationWim    = $WIMDestination
+$CompressionType   = "max"                            # Options: max, fast, or none
+
+
+
+
 Write-Host "The Source Image Location prompt is the CUSTOM Windows image WIM file you are exporting" -ForegroundColor Red
 Write-Host
 Write-Host "The Destination Image Location prompt is the actual Windows install.wim file you are exporting to CUSTOM image TO!" -ForegroundColor Red
@@ -17,7 +28,7 @@ Function Show-CustomExport(){
     }
 
     Write-Host "Adding custom image to WIM..." -ForegroundColor Cyan
-    Export-WindowsImage -SourceImagePath $WIMSource -SourceIndex 1 -DestinationImagePath $WIMDestination -CompressionType Maximum -CheckIntegrity
+    Add-WindowsImage -ImagePath $WIMDestination -SourceIndex $CustomIndex -CapturePath $WIMSource -CompressionType Maximum -CheckIntegrity
 
     $WIMQuestion = Read-Host -Prompt 'Do you want to add another CUSTOM image to the install.wim file?'
     if ($WIMQuestion -in 'YES', 'yes', 'Y', 'y'){
