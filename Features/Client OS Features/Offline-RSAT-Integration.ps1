@@ -208,8 +208,6 @@ New-Item -Path $extract -ItemType Directory -Force
 Copy-Item -Path "${driveLetter}:\*" -Destination $extract -Recurse -Force
 Get-WindowsCapability -Path $Mount -Name RSAT*| Add-WindowsCapability -Path $Mount -LimitAccess -Source $extract
 }
-}
-
     
 ##########################################################
 # Dismount Windows image saving updated install.wim. Using
