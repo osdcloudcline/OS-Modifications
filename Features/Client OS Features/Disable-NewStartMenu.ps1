@@ -52,40 +52,18 @@ Function Show-IntelDrivers(){
 ##########################################################   
 
 cls
-Write-Host                                                                       
-Write-Host ' This script will update Windows 10 install media with new drivers'
-Write-Host ' downloaded from http://www.catalog.update.microsoft.com'
+Write-Host  
 Write-Host 
-Write-Host ' Please notice that the process will take quite some time, depending'
-Write-Host ' on amount and size of drivers being applied to Windows image. '
+Write-Host 
+Write-Host ' This script will disable the new Start Menu beginning in '
+Write-Host ' Windows 11 versions 24H2 going forward and revert it back to the'
+Write-Host ' original styled smaller Start Menu                               '
 Write-Host
-Write-Host ' If you already have a bootable Windows 10 install media on USB '
-Write-Host ' flash drive, plug it in now.'
-Write-Host 
-Write-Host ' If you want to upgrade an ISO instead, mount (double click) a Windows'
-Write-Host ' ISO image and copy its content to a folder on local PC, for instance'
-Write-Host ' "D:\ISO_Files". Make sure the folder has no other content.'
-Write-Host 
-Write-Host ' When ISO files have been copied to a hard disk folder, or USB drive'
-Write-Host ' has been plugged in, press Enter to start.'
-Write-Host 
-Write-Host '                                                                      ' -ForegroundColor DarkBlue -BackgroundColor White
-Write-Host ' Notice that you cannot use this script to update an ESD based install' -ForegroundColor DarkBlue -BackgroundColor White
-Write-Host ' media like for instance ISO / USB made with Media Creation Tool.     ' -ForegroundColor DarkBlue -BackgroundColor White
-Write-Host ' You must first convert "install.esd" file to "install.wim". See      ' -ForegroundColor DarkBlue -BackgroundColor White
-Write-Host ' TenForums tutorial "Convert ESD to WIM":' -ForegroundColor DarkBlue -BackgroundColor White -NoNewline
-Write-Host ' http://w10g.eu/esd2wim      ' -ForegroundColor DarkCyan -BackgroundColor White
-Write-Host '                                                                      ' -ForegroundColor DarkBlue -BackgroundColor White
+Write-Host
 Write-Host
 Write-Host ' ' -NoNewline
 pause
 
-##########################################################
-# Delete possible old log files from previous runs
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log}
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverFail.log}
 
 ##########################################################
 # Prompt user for path to install media (USB drive) or 
@@ -100,20 +78,9 @@ $WimCount = 0
 while ($WimCount -eq 0) {
 cls
 Write-Host 
-Write-Host ' Enter source path. In case you are using a plugged in USB flash'
-Write-Host ' drive, simply enter its drive letter followed by : (colon).'
+Write-Host ' Please enter the folder for you extracted Windows 11 Install.wim'
 Write-Host
-Write-Host ' If the source you are using is a Windows 10 ISO or DVD, enter.'
-Write-Host ' path to folder where you copied ISO / DVD content.'
-Write-Host 
-Write-Host 
-Write-Host ' Examples:'
-Write-Host ' - A USB drive, enter its drive letter with colon (D: or F:)'
-Write-Host ' - A USB drive with both bit versions, enter D:\x86 or D:\x64'
-Write-Host ' - ISO files copied to folder, enter path (D:\ISO_Files)'
-Write-Host ' - Dual bit version ISO copied to folder, enter path with bit version'
-Write-Host '   (W:\MyISOFolder\x86 or W:\MyISOFolder\x64)' 
-Write-Host
+
 
 $ISOFolder = Read-Host -Prompt ' Enter source, press Enter'
 $WimFolder = $ISOFolder
@@ -218,7 +185,11 @@ Write-Host ' Image mounted, modifying image.'
 Write-Host
 
 
-reg load HKLM\OfflineSoftware "$mount\Windows\System32\config\SOFTWARE"
+
+Write-Host "Processing: Index $index" -ForegroundColor Cyan
+Write-Host
+
+reg load HKLM\OfflineSoftware "$Mount\Windows\System32\config\SOFTWARE"
 
 reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "EnabledState" /t REG_DWORD /d 1 /f
 reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "StateOptions" /t REG_DWORD /d 1 /f
@@ -226,5 +197,16 @@ reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement
 reg unload HKLM\OfflineSoftware
 
 
+##########################################################
+# Dismount Windows image saving updated install.wim. Using
+# $EmptySpace variable again to push output from under
+# PowerShell progressbar to visible area under it
+##########################################################
 
+cls
+Write-Host $EmptySpace
+Write-Host ' Dismounting Windows image, saving updated install.wim.'
+Write-Host ' This will take a minute or two.'
+Dismount-WindowsImage -Path $Mount -Save | Out-Null
+cls
 
