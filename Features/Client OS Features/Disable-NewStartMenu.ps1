@@ -1,4 +1,3 @@
-
 ##########################################################
 # Checking if PS is running elevated. If not, elevating it
 ##########################################################   
@@ -55,6 +54,63 @@ Write-Host
 Write-Host ' ' -NoNewline
 pause
 
+
+##########################################################
+# Prompt user for path to install media (USB drive) or 
+# folder where ISO content was copied to.
+#
+# Using 'while' loop to check that source given by user 
+# contains a Windows image, if not user is asked to check
+# path and try again
+##########################################################
+
+$WimCount = 0
+$ImagePath = ""
+
+while ($WimCount -eq 0) {
+    cls
+    Write-Host ""
+    Write-Host "==========================================================" -ForegroundColor Cyan
+    Write-Host "         WINDOWS INSTALLATION MEDIA PATH CHECK            " -ForegroundColor Cyan
+    Write-Host "==========================================================" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host " Please enter the drive letter (e.g., D:\) or folder path"
+    Write-Host " where your Windows 11 installation files are located:"
+    Write-Host ""
+    
+    $UserPath = Read-Host -Prompt " Path"
+    
+    # Ensure the path ends with a backslash for formatting consistency
+    if ($UserPath -notlike "*\") { $UserPath += "\" }
+
+    # Define common paths for Windows image files (WIM or ESD)
+    $WimPath = Join-Path $UserPath "sources\install.wim"
+    $EsdPath = Join-Path $UserPath "sources\install.esd"
+
+    # Validate if either file exists
+    if (Test-Path $WimPath) {
+        $ImagePath = $WimPath
+        $WimCount = 1
+    } 
+    elseif (Test-Path $EsdPath) {
+        $ImagePath = $EsdPath
+        $WimCount = 1
+    } 
+    else {
+        Write-Host ""
+        Write-Warning " Error: Could not find 'install.wim' or 'install.esd' in '$UserPath`sources\'"
+        Write-Host " Please verify your path and try again." -ForegroundColor Yellow
+        Start-Sleep -Seconds 3
+    }
+}
+
+cls
+Write-Host " Success! Found Windows Image at: $ImagePath" -ForegroundColor Green
+Write-Host ""
+##########################################################
+# Next Step: Add your deployment image servicing (DISM) 
+# or registry modifications below this line.
+##########################################################
 
 ##########################################################
 # Prompt user for path to install media (USB drive) or 
@@ -187,7 +243,6 @@ reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement
 
 reg unload HKLM\OfflineSoftware
 
-
 ##########################################################
 # Dismount Windows image saving updated install.wim. Using
 # $EmptySpace variable again to push output from under
@@ -201,3 +256,26 @@ Write-Host ' This will take a minute or two.'
 Dismount-WindowsImage -Path $Mount -Save | Out-Null
 cls
 
+##########################################################
+# Clean up temporary directories and finish script
+##########################################################
+
+Write-Host ""
+Write-Host " Removing temporary folder '$Mount'..."
+if (Test-Path $Mount) {
+    Remove-Item -Path $Mount -Recurse -Force | Out-Null
+}
+
+Write-Host ""
+Write-Host "==========================================================" -ForegroundColor Green
+Write-Host "                SCRIPT COMPLETED SUCCESSFULLY             " -ForegroundColor Green
+Write-Host "==========================================================" -ForegroundColor Green
+Write-Host ""
+Write-Host " The Windows 11 image (Index $Index) inside:"
+Write-Host " '$WimFile'"
+Write-Host " has been updated to disable the new Start Menu structure."
+Write-Host ""
+Write-Host " Press any key to exit..."
+
+Write-Host ' ' -NoNewline
+Pause
