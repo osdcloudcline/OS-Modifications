@@ -12,7 +12,8 @@ Write-Host " 2. Add Features to WIM File"
 Write-Host " 3. Extract a WIM File from the original install.wim"
 Write-Host " 4. Add Offline WIM File Registry modifications"
 Write-Host " 5. Add Updates to the WIM File"
-Write-Host " 6. Return to Main Menu"
+Write-Host " 6. Configure Windows 11 Enterprise Edition for gaming in the offline mounted WIM File"
+Write-Host " 7. Return to Main Menu"
 
 do 
 {
@@ -46,11 +47,15 @@ do
         Invoke-Expression $($Updates.Content)
         }
   '6' { cls
+        $EnterpriseEditionGaming = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Updates/Updates.ps1")
+        Invoke-Expression $($EnterpriseEditionGaming.Content)
+        }
+  '7' { cls
         $Main = Invoke-WebRequest("")
         Invoke-Expression $($Main.Content)
         }
     }
     }
-     until ($selection -eq '6'){Invoke-Expression $($Main.Content)}
+     until ($selection -eq '7'){Invoke-Expression $($Main.Content)}
 }
 Show-MainMenu
