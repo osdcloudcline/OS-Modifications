@@ -1,11 +1,13 @@
-$source = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"
-$destination = "C:\downloads"
-$extract = "C:\downloads\extract\OS\Win11-FoD\25H2"
-$OSISOextract = "C:\OS\Windows11"
+
+
 
 
 $FoDISO = Read-Host -Prompt 'Do you already have the Windows 11 FoD ISO File?'
-If($FoDISO -in 
+If($FoDISO -in 'YES', 'yes', 'Y', 'y'){
+$source = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"
+$destination = "C:\downloads"
+$extract = "C:\downloads\extract\OS\Win11-FoD\25H2"
+
 Save-WebFile -SourceUrl $source -DestinationDirectory $destination
 
 $isoPath = "C:\downloads\26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"
@@ -16,6 +18,7 @@ $mountResult = Mount-DiskImage -ImagePath $isoPath -PassThru
 $driveLetter = ($mountResult | Get-Volume).DriveLetter
 New-Item -Path $extract -ItemType Directory -Force
 Copy-Item -Path "${driveLetter}:\*" -Destination $extract -Recurse -Force
+}elseif($FoDISO -in
 
 ##########################################################
 # Checking if PS is running elevated. If not, elevating it
