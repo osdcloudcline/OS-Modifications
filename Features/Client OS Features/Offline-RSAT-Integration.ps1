@@ -3,6 +3,9 @@ $destination = "C:\downloads"
 $extract = "C:\downloads\extract\OS\Win11-FoD\25H2"
 $OSISOextract = "C:\OS\Windows11"
 
+
+$FoDISO = Read-Host -Prompt 'Do you already have the Windows 11 FoD ISO File?'
+If($FoDISO -in 
 Save-WebFile -SourceUrl $source -DestinationDirectory $destination
 
 $isoPath = "C:\downloads\26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"
@@ -193,6 +196,19 @@ Write-Host "Adding RSAT Tools to the offline mounted WIM file" -ForegroundColor 
 Get-WindowsCapability -Path $mount -Name RSAT*| Add-WindowsCapability -Path $mount -LimitAccess -Source $extract
 Write-Host
 Write-Host "Saving changes" -ForegroundColor Cyan
-Dismount-WindowsImage -Path $Mount -Save
+
+
+##########################################################
+# Dismount Windows image saving updated install.wim. Using
+# $EmptySpace variable again to push output from under
+# PowerShell progressbar to visible area under it
+##########################################################
+
+cls
+Write-Host $EmptySpace
+Write-Host ' Dismounting Windows image, saving updated install.wim.'
+Write-Host ' This will take a minute or two.'
+Dismount-WindowsImage -Path $Mount -Save | Out-Null
+cls
 
 
