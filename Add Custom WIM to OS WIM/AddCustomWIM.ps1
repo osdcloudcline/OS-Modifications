@@ -15,10 +15,10 @@ Write-Host
 
 
 
-Function Show-CustomExport(){
-    
-    $WIMSource = (Read-Host -Prompt 'Please enter the source image file location'
-    $WIMDestination = (Read-Host -Prompt 'Please enter destination path for extracted WIM File'
+function Show-CustomExport {
+    # Get user input for paths
+    $WIMSource = Read-Host -Prompt "Please enter the source image file location"
+    $WIMDestination = Read-Host -Prompt "Please enter destination path for extracted WIM File"
 
     # Validate that the source file actually exists
     if (-not (Test-Path -Path $WIMSource)) {
@@ -26,24 +26,30 @@ Function Show-CustomExport(){
         return
     }
 
-    Write-Host "Adding custom image to WIM..." -ForegroundColor Cyan
-    $Name = Read-Host -Prompt 'Please provide a name for the image'
-    Add-WindowsImage -ImagePath $WIMDestination -CapturePath $WIMSource  -Name "$Name"
+    Write-Host "Adding custom image to WIM" -ForegroundColor Cyan
+    $Name = Read-Host -Prompt "Please provide a name for the image"
+    
+    # Capture and add the image to the destination WIM
+    Add-WindowsImage -ImagePath $WIMDestination -CapturePath $WIMSource -Name $Name
 
-    $WIMQuestion = Read-Host -Prompt 'Do you want to add another CUSTOM image to the install.wim file?'
-    if ($WIMQuestion -in 'YES', 'yes', 'Y', 'y'){
+    # Ask to repeat or move on
+    $WIMQuestion = Read-Host -Prompt "Do you want to add another CUSTOM image to the install wim file? (Y/N)"
+    
+    if ($WIMQuestion -in 'YES', 'yes', 'Y', 'y') {
         Show-CustomExport
-    } elseif ($WIMQuestion -in 'NO', 'no', 'N', 'n'){
+    } elseif ($WIMQuestion -in 'NO', 'no', 'N', 'n') {
         Show-WIMInfo
     }
 }
 
-Function Show-WIMInfo(){
-    $WIMInfo = (Read-Host -Prompt 'Please enter the location for the Windows install.wim file'
+function Show-WIMInfo {
+    $WIMInfo = Read-Host -Prompt "Please enter the location for the Windows install wim file"
+    
     if (Test-Path -Path $WIMInfo) {
         Get-WindowsImage -ImagePath $WIMInfo
     } else {
-        Write-Host "File not found." -ForegroundColor Red
+        Write-Host "File not found" -ForegroundColor Red
+        Show-CustomExport
     }
 }
 
