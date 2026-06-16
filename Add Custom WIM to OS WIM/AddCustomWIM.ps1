@@ -26,11 +26,12 @@ function Show-CustomExport {
         return
     }
 
-    Write-Host "Adding custom image to WIM" -ForegroundColor Cyan
+   
     $Name = Read-Host -Prompt "Please provide a name for the image"
     
     # Capture and add the image to the destination WIM
-    Add-WindowsImage -ImagePath $WIMDestination -CapturePath $WIMSource -Name $Name
+    Write-Host "Adding custom image to WIM" -ForegroundColor Cyan
+    Export-WindowsImage -SourceImagePath $WIMSource -SourceIndex 1 -DestinationImagePath $WIMDestination -Name "$Name"
 
     # Ask to repeat or move on
     $WIMQuestion = Read-Host -Prompt "Do you want to add another CUSTOM image to the install wim file? (Y/N)"
