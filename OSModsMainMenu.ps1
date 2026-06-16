@@ -47,7 +47,7 @@ do
         Invoke-Expression $($Updates.Content)
         }
   '6' { cls
-        $EnterpriseEditionGaming = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Updates/Updates.ps1")
+        $EnterpriseEditionGaming = Invoke-WebRequest("https://github.com/osdcloudcline/OS-Modifications/raw/refs/heads/main/Gaming/TuneForGaming.ps1")
         Invoke-Expression $($EnterpriseEditionGaming.Content)
         }
   '7' { cls
