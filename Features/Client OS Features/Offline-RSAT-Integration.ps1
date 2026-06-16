@@ -1,9 +1,9 @@
 Function Show-FoDISO(){
 $FoDISO = Read-Host -Prompt 'Do you already have the Windows 11 FoD ISO File?'
 If($FoDISO -in 'YES', 'yes', 'Y', 'y'){
-Show-FoDISOfromWeb
-}elseif($FoDISO -in 'NO', 'no', 'N', 'n'){
 Show-LocalFoDISO
+}elseif($FoDISO -in 'NO', 'no', 'N', 'n'){
+Show-FoDISOfromWeb
 }
 }
 
