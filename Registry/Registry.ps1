@@ -231,12 +231,14 @@ Write-Host
 
 $HKCRREG1 = "Add Copy To Move To"
 
-reg load HKLM\OfflineSettings $mount\Windows\System32\Config\Software
+reg load HKLM\OfflineSettings $Mount\Windows\System32\Config\Software
 
 Write-Host "Importing $HKCRREG1...." -ForegroundColor Cyan
 Write-Host
 Write-Verbose "Adding $HKCRREG1..." -Verbose
 reg add "HKLM\OfflineSoftware\Classes\AllFilesystemObjects\shellex\ContextMenuHandlers\{C2FBB630-2971-11D1-A18C-00C04FD75D13}" /f
+
+pause
 
 $HKCRREG2 = "Add Safe Mode"
 
@@ -272,7 +274,7 @@ reg add "HKLM\SOFTWARE\Classes\OFFLINE\DesktopBackground\Shell\SafeMode\shell\00
 reg add "HKLM\SOFTWARE\Classes\OFFLINE\DesktopBackground\Shell\SafeMode\shell\004-SafeModeCommandPrompt" /v "HasLUAShield" /t REG_SZ /d "" /f
 reg add "HKLM\SOFTWARE\Classes\OFFLINE\DesktopBackground\Shell\SafeMode\shell\004-SafeModeCommandPrompt\command" /ve /t REG_SZ /d "powershell -windowstyle hidden -command \"Start-Process cmd -ArgumentList '/s,/c,bcdedit /set {current} safeboot minimal & bcdedit /set {current} safebootalternateshell yes & shutdown -r -t 00 -f' -Verb runAs\"" /f
 
-
+pause
 
 $HKLMREG1 = "Adobe Master Collection Suite"
 
@@ -309,6 +311,8 @@ reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\c
 reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cDefaultLaunchAttachmentPerms" /f
 reg add "HKLM\OFFLINE\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cDefaultLaunchURLPerms" /f
 
+pause 
+
 $HKLMREG2 = "Google Chrome AI"
 
 Write-Host "Importing $HKLMREG2..." -ForegroundColor Cyan
@@ -326,7 +330,9 @@ reg add "HKLM\SOFTWARE\Policies\Google\Chrome" /v "AIModeSettings" /t REG_DWORD 
 
 reg unload HKLM\OfflineSettings
 
-reg load HKLM\OfflineSystem $mount\Windows\System32\Config\System
+pause
+
+reg load HKLM\OfflineSystem $Mount\Windows\System32\Config\System
 
 $HKSYSTEMREG1 = "Disable BitLocker Device Encryption"
 
@@ -350,6 +356,8 @@ reg add "HKLM\OfflineSettings\Policies\Microsoft\Windows Defender\Real-Time Prot
 reg add "HKLM\OfflineSystem\ControlSet001\Services\WinDefend" /v Start /t REG_DWORD /d 4 /f
 
 reg unload HKLM\OfflineSystem
+
+pause
 
 ##########################################################
 # Dismount Windows image saving updated install.wim. Using
