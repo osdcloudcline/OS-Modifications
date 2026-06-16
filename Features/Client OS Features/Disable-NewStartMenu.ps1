@@ -45,7 +45,7 @@ function Use-RunAs
 
 Use-RunAs 
 
-Function Show-IntelDrivers(){
+
 
 ##########################################################
 # Show short instructions to user
