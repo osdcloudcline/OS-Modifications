@@ -60,9 +60,9 @@ cls
 Write-Host  
 Write-Host 
 Write-Host 
-Write-Host ' This script will disable the new Start Menu beginning in '
-Write-Host ' Windows 11 versions 24H2 going forward and revert it back to the'
-Write-Host ' original styled smaller Start Menu                               '
+Write-Host ' This script will tune Windows 11 ENTERPRISE Edition ONLY '
+Write-Host ' for gaming. If you are not planning on installing or are running'
+Write-Host ' Windows 11 Enterprise, please exit this script                   '                               '
 Write-Host
 Write-Host
 Write-Host
@@ -286,3 +286,16 @@ reg unload HKEY_USERS\OFFLINE_DEFAULT | Out-Null
 
 Write-Host "[✓] Offline integration complete! Disposed hive links safely." -ForegroundColor Green
 Write-Host "[!] You may now commit your changes using DISM (dism /unmount-image /commit)." -ForegroundColor Yellow
+
+##########################################################
+# Dismount Windows image saving updated install.wim. Using
+# $EmptySpace variable again to push output from under
+# PowerShell progressbar to visible area under it
+##########################################################
+
+cls
+Write-Host $EmptySpace
+Write-Host ' Dismounting Windows image, saving updated install.wim.'
+Write-Host ' This will take a minute or two.'
+Dismount-WindowsImage -Path $Mount -Save | Out-Null
+cls
