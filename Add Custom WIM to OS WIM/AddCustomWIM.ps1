@@ -47,7 +47,7 @@ function Show-WIMInfo {
     $WIMInfo = Read-Host -Prompt "Please enter the location for the Windows install wim file"
     
     if (Test-Path -Path $WIMInfo) {
-        Get-WindowsImage -ImagePath $WIMInfo
+        Get-WindowsImage -ImagePath "$WIMInfo"
     } else {
         Write-Host "File not found" -ForegroundColor Red
         Show-CustomExport
