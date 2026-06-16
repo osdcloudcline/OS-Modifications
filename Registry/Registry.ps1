@@ -350,3 +350,16 @@ reg add "HKLM\OfflineSettings\Policies\Microsoft\Windows Defender\Real-Time Prot
 reg add "HKLM\OfflineSystem\ControlSet001\Services\WinDefend" /v Start /t REG_DWORD /d 4 /f
 
 reg unload HKLM\OfflineSystem
+
+##########################################################
+# Dismount Windows image saving updated install.wim. Using
+# $EmptySpace variable again to push output from under
+# PowerShell progressbar to visible area under it
+##########################################################
+
+cls
+Write-Host $EmptySpace
+Write-Host ' Dismounting Windows image, saving updated install.wim.'
+Write-Host ' This will take a minute or two.'
+Dismount-WindowsImage -Path $Mount -Save | Out-Null
+cls
