@@ -247,7 +247,7 @@ $DriverSchema = @(
     @{ Name = "Monitor";    Multi = $true;  Prompt = "monitor drivers" }
     @{ Name = "Network";    Multi = $true;  Prompt = "network card drivers" }
     @{ Name = "NPU";        Multi = $false; Prompt = "NPU drivers" }
-    @{ Name = "Printer";    Multi = $false; Prompt = "printer drivers" }
+    @{ Name = "Printer";    Multi = $true; Prompt = "printer drivers" }
     @{ Name = "Storage";    Multi = $false; Prompt = "storage drivers" }
     @{ Name = "CPU";        Multi = $true;  Prompt = "CPU drivers" }
     @{ Name = "Virtualization";      Multi = $true;  Prompt = "Virtualization drivers" }
@@ -448,13 +448,6 @@ Write-Host ' ' -NoNewline
 pause
 
 ##########################################################
-# Delete possible old log files from previous runs
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log}
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverFail.log}
-
-##########################################################
 # Prompt user for path to install media (USB drive) or 
 # folder where ISO content was copied to.
 #
@@ -595,7 +588,7 @@ $NetworkDrivers = Read-Host -Prompt 'Please provide folder where network card dr
 $NPUDrivers     = Read-Host -Prompt 'Please provide folder where NPU drivers are stored' 
 $PrinterDrivers = Read-Host -Prompt 'Please provide folder where printer drivers are stored' 
 $StorageDrivers = Read-Host -Prompt 'Please provide folder where storage drivers are stored' 
-$CPUQues        = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
+$CPUDrivers       = Read-Host -Prompt 'Please provide folder where CPU drivers are stored'
 
 # Combines all separate paths into one array variable
 $AllAMDDrivers = @(
@@ -607,7 +600,7 @@ $AllAMDDrivers = @(
     $NPUDrivers
     $PrinterDrivers
     $StorageDrivers
-    $CPUQues
+    $CPUDrivers
 )
 
 ##########################################################
