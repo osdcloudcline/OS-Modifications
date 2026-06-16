@@ -92,13 +92,6 @@ Write-Host ' ' -NoNewline
 pause
  
 ##########################################################
-# Delete possible old log files from previous runs
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSUpdates\WUSuccess.log) {Remove-Item C:\OSDCloud\Logs\OSRegistry\RegistrySuccess.log}
-if (Test-Path C:\OSDCloud\Logs\OSUpdates\WUFail.log) {Remove-Item C:\OSDCloud\Logs\OSRegistry\RegistryFail.log}
-
-##########################################################
 # Prompt user for path to install media (USB drive) or 
 # folder where ISO content was copied to.
 #
