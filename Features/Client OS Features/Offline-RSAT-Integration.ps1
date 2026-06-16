@@ -1,11 +1,11 @@
-
+Function Show-FoDISO(){
 $FoDISO = Read-Host -Prompt 'Do you already have the Windows 11 FoD ISO File?'
 If($FoDISO -in 'YES', 'yes', 'Y', 'y'){
 Show-FoDISOfromWeb
 }elseif($FoDISO -in 'NO', 'no', 'N', 'n'){
 Show-LocalFoDISO
 }
-
+}
 
 Function Show-FoDISOfromWeb(){
 $source = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"
@@ -417,3 +417,5 @@ Write-Host ' This will take a minute or two.'
 Dismount-WindowsImage -Path $Mount -Save | Out-Null
 cls
 }
+
+Show-FoDISO
