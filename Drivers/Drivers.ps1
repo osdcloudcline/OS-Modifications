@@ -95,13 +95,6 @@ Write-Host ' ' -NoNewline
 pause
 
 ##########################################################
-# Delete possible old log files from previous runs
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log}
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log) {Remove-Item C:\OSDCloud\Logs\OSDrivers\DriverFail.log}
-
-##########################################################
 # Prompt user for path to install media (USB drive) or 
 # folder where ISO content was copied to.
 #
