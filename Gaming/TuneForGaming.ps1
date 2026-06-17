@@ -113,6 +113,22 @@ $WimFolder = $ISOFolder
 
 $WimFile = Join-Path $WimFolder '\Sources\install.wim'
 
+##########################################################
+# List Windows editions on image, prompt user for
+# edition to be updated
+##########################################################
+
+cls
+Get-WindowsImage -ImagePath $WimFile | Format-Table ImageIndex, ImageName
+Write-Host 
+Write-Host ' The install.wim file contains above listed Windows editions.'
+Write-Host ' Which edition should be updated?'
+Write-Host  
+Write-Host ' Enter the ImageIndex number of correct edition and press Enter.'
+Write-Host ' If this is a single edition Windows image, enter 1.'                                                                     
+Write-Host
+$Index = Read-Host -Prompt ' Select edition'
+
 
 
 Write-Host "[*] Mounting offline registry hives from: $MountPath" -ForegroundColor Cyan
