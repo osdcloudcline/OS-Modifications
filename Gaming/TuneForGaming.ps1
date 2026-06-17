@@ -1,18 +1,3 @@
-<#
-.SYNOPSIS
-    Streamlines a mounted offline Windows 11 image into a high-performance gaming environment.
-.DESCRIPTION
-    Mounts and modifies offline registry hives to remove enterprise infrastructure, 
-    disable security virtualization, optimize power states, and apply low-latency tweaks.
-.PARAMETER MountPath
-    The absolute path to the directory where your Windows WIM/VHDX image is currently mounted.
-#>
-
-param (
-    [Parameter(Mandatory=$true)]
-    [string]$MountPath
-)
-
 ##########################################################
 # Checking if PS is running elevated. If not, elevating it
 ##########################################################   
