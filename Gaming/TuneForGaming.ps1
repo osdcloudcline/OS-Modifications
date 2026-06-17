@@ -237,15 +237,6 @@ reg add "HKEY_USERS\OFFLINE_DEFAULT\Software\Microsoft\DirectX\UserGpuPreference
 reg add "HKEY_USERS\OFFLINE_DEFAULT\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "AppCaptureEnabled" /t REG_DWORD /d 0 /f | Out-Null
 reg add "HKEY_USERS\OFFLINE_DEFAULT\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "HistoricalCaptureEnabled" /t REG_DWORD /d 0 /f | Out-Null
 
-# 4. Disable Core Isolation & Virtualization-Based Security (VBS)
-Write-Host "[*] Disabling CPU-heavy Virtualization Security offline..." -ForegroundColor Cyan
-
-# Disable HVCI / Memory Integrity
-reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v "Enabled" /t REG_DWORD /d 0 /f | Out-Null
-
-# Disable Virtualization-Based Security completely
-reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\Lsa" /v "LsaCfgFlags" /t REG_DWORD /d 0 /f | Out-Null
-
 # Terminate High-Overhead WMI Event Tracing Logs
 reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\WMI\Autologger\WdiContextLog" /v "Start" /t REG_DWORD /d 0 /f | Out-Null
 
