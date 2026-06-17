@@ -129,7 +129,60 @@ Write-Host ' If this is a single edition Windows image, enter 1.'
 Write-Host
 $Index = Read-Host -Prompt ' Select edition'
 
+##########################################################
+# Ask user which drive should be used for temporary 
+# working folder 'Mount'. If 'Mount' exists on selected
+# drive, delete and recreate it.
+##########################################################
 
+cls
+Write-Host
+[System.IO.DriveInfo]::GetDrives() | Where-Object {$_.DriveType -eq 'Fixed'} | Format-Table @{n='Drive ID';e={($_.Name)}}, @{n='Label';e={($_.VolumeLabel)}}, @{n='Free (GB)';e={[int]($_.AvailableFreeSpace/1GB)}}
+Write-Host
+Write-Host ' Above is a list of all hard disk partitions showing available'
+Write-Host ' free space on each of them. Select a partition for temporary'
+Write-Host ' folder to mount Windows image. Selected partition must have at'
+Write-Host ' least 15 GB available free space. Folder will be removed when'
+Write-Host ' image has been updated.'
+Write-Host
+$Drive = Read-Host -Prompt ' Enter drive letter and press Enter'
+$Mount = $Drive.SubString(0,1) + ':\Mount'
+
+if (Test-Path $Mount) {Remove-Item $Mount}
+$Mount = New-Item -ItemType Directory -Path $Mount
+
+##########################################################
+# Mount Windows image in temporary mount folder.
+#
+# Adding eight empty lines to $EmptySpace variable to be
+# used as placeholder to push output below PowerShell
+# progressbar which is shown on top. Five empty lines would
+# be enough for PowerShell ISE but standard PowerShell will
+# need eight lines, otherwise output remains hidden
+##########################################################
+
+cls
+$EmptySpace = @"
+
+
+
+  
+ 
+
+
+
+"@
+
+Write-Host $EmptySpace
+Write-Host ' Mounting Windows image. This will take a few minutes.'
+Mount-WindowsImage -ImagePath $WimFolder\Sources\install.wim -Index $Index -Path $Mount | Out-Null
+Write-Host
+Write-Host ' Image mounted.'
+Write-Host
+
+#######################################################################################
+##   Mount Offline Registry Hives                                                  ###
+#######################################################################################
 
 Write-Host "[*] Mounting offline registry hives from: $MountPath" -ForegroundColor Cyan
 $RegPaths = @{
