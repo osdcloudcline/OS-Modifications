@@ -43,7 +43,7 @@ cls
 Write-Host  
 Write-Host ' This script will tune Windows 11 ENTERPRISE Edition ONLY '
 Write-Host ' for gaming. If you are not planning on installing or are running'
-Write-Host ' Windows 11 Enterprise, please exit this script'                                                  '
+Write-Host ' Windows 11 Enterprise, please exit this script'                                                  
 Write-Host ' ' -NoNewline
 pause
 
