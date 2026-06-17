@@ -59,7 +59,7 @@ pause
 
 $WimCount = 0
 while ($WimCount -eq 0) {
-cls
+
 Write-Host 
 Write-Host ' Enter source path. In case you are using a plugged in USB flash'
 Write-Host ' drive, simply enter its drive letter followed by : (colon).'
