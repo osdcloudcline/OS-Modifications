@@ -273,15 +273,6 @@ foreach ($Category in $DriverSchema) {
     }
 }
 
-
-##########################################################
-# Write drivers one by one to Windows image. If OK, add
-# driver name to 'DriverSuccess.log' file,
-# if failed add to 'DriverFail.log'
-##########################################################
-
-
-
 foreach ($File in $AllIntelDrivers) {
     # Visual anchor for tracking progress
     Write-Host "Applying drivers from: $File" -ForegroundColor Cyan
@@ -290,17 +281,6 @@ foreach ($File in $AllIntelDrivers) {
     # FIX 2: Wrap "$Mount" and "$File" in double quotes to handle folder spaces safely.
     dism.exe /Image:"$Mount" /Add-Driver /driver:"$File" /Recurse /ForceUnsigned
 
-    # FIX 3: Check execution status immediately after the command runs
-    if ($LASTEXITCODE -eq 0) {
-        # FIX 4: $File is a plain string path, so use Split-Path to extract just the folder name
-        $FolderName = Split-Path $File -Leaf
-        $FolderName | Out-File -FilePath "C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log" -Append
-    } else {
-        $FolderName = Split-Path $File -Leaf
-        $FolderName | Out-File -FilePath "C:\OSDCloud\Logs\OSDrivers\DriverFail.log" -Append
-    }
-    
-    # FIX 5: Removed 'break' so the script continues to the next driver folder!
 }
     
 ##########################################################
@@ -315,52 +295,6 @@ Write-Host ' Dismounting Windows image, saving updated install.wim.'
 Write-Host ' This will take a minute or two.'
 Dismount-WindowsImage -Path $Mount -Save | Out-Null
 cls
-
-##########################################################
-# Show drivers added to Windows image
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log)
-    {
-    Write-Host
-    Write-Host ' Following drivers successfully added to Windows image: '
-    Write-Host
-    $LogContent = Get-Content 'C:\OSDCloud\Logs\OSDrivers\DriverSuccess.log'
-    foreach ($Line in $LogContent)
-        {Write-Host ' - '$Line}
-    } 
-    else
-    {
-    Write-Host
-    Write-Host ' All drivers failed, nothing added to Windows image.'
-    Write-Host
-    Write-Host ' ' -NoNewline
-    pause
-    exit
-    }
-
-##########################################################
-# Show failed drivers
-##########################################################
-
-if (Test-Path C:\OSDCloud\Logs\OSDrivers\DriverFail.log)
-    {
-    Write-Host
-    Write-Host ' Following drivers could not be added to Windows image: '
-    $LogContent = Get-Content 'C:\OSDCloud\Logs\OSDrivers\DriverFail.log'
-    foreach ($Line in $LogContent)
-        {Write-Host ' - '$Line}
-    } 
-    else
-    {
-    Write-Host
-    Write-Host ' No failed drivers.'}
-
-##########################################################
-# Delete temporary mount folder
-##########################################################
-
-if (Test-Path $Mount) {Remove-Item $Mount}
 
 ##########################################################
 # End credits
