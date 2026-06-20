@@ -264,7 +264,7 @@ reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\001
 
 reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\002-SafeMode" /ve /t REG_SZ /d "Restart in Safe Mode" /f
 reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\002-SafeMode" /v "HasLUAShield" /t REG_SZ /d "" /f
-reg.exe add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\002-SafeMode\command" /ve /t REG_SZ /d --% "powershell -windowstyle hidden -command Start-Process cmd -ArgumentList '/s' , '/c' , 'bcdedit /set {default} safeboot minimal & bcdedit /deletevalue {default} safebootalternateshell & shutdown -r -t 00 -f' -Verb runAs" /f
+reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\002-SafeMode\command" /ve /t REG_SZ /d --% "powershell -windowstyle hidden -command Start-Process cmd -ArgumentList '/s' , '/c' , 'bcdedit /set {default} safeboot minimal & bcdedit /deletevalue {default} safebootalternateshell & shutdown -r -t 00 -f' -Verb runAs" /f
 
 reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\003-SafeModeNetworking" /ve /t REG_SZ /d "Restart in Safe Mode with Networking" /f
 reg add "HKLM\OfflineSoftware\Classes\DesktopBackground\Shell\SafeMode\shell\003-SafeModeNetworking" /v "HasLUAShield" /t REG_SZ /d "" /f
@@ -281,6 +281,8 @@ $HKLMREG1 = "Adobe Master Collection Suite"
 Write-Host "Importing $HKLMREG1..." -ForegroundColor Cyan
 Write-Host 
 Write-Verbose "Adding $HKLMREG1..." -Verbose
+
+reg load HKLM\OfflineSoftware "$Mount\Windows\System32\config\SOFTWARE"
 
 reg add "HKLM\OfflineSoftware\WOW6432Node\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cServices" /f
 reg add "HKLM\OfflineSoftware\WOW6432Node\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown\cCloud" /f
