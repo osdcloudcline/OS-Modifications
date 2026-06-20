@@ -92,9 +92,9 @@ pause
 
 $HKLMREG2 = "Google Chrome AI"
 
-Write-Host "Importing $HKLMREG2..." -ForegroundColor Cyan
+Write-Host "Adding $HKLMREG2... -ForegroundColor Cyan
 Write-Host 
-Write-Verbose "Adding $HKLMREG2..." -Verbose
+
 
 
 reg add "HKLM\OfflineSoftware\Policies\Google\Chrome" /v "GenAILocalFoundationalModelSettings" /t REG_DWORD /d 1 /f
@@ -102,8 +102,6 @@ reg add "HKLM\OfflineSoftware\Policies\Google\Chrome" /v "GenAiDefaultSettings" 
 reg add "HKLM\OfflineSoftware\Policies\Google\Chrome" /v "AIModeSettings" /t REG_DWORD /d 1 /f
 
 reg unload HKLM\OfflineSoftware
-
-pause
 
 reg load HKLM\OfflineSystem $Mount\Windows\System32\Config\SYSTEM
 
@@ -129,7 +127,7 @@ Write-Host
 Write-Verbose "Adding $HKLMSYSTEMREG2..." -Verbose
 
 reg add "HKLM\OfflineSoftware\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f
-reg add "HKLM\OfflineSettings\CurrentControlSet\Services\Sense" /v Start /t REG_DWORD /d 4 /f
+reg add "HKLM\OfflineSystem\CurrentControlSet\Services\Sense" /v Start /t REG_DWORD /d 4 /f
 reg add "HKLM\OfflineSystem\CurrentControlSet\Services\WdFilter" /v Start /t REG_DWORD /d 4 /f
 reg add "HKLM\OfflineSystem\CurrentControlSet\Services\WdBoot" /v Start /t REG_DWORD /d 4 /f
 reg add "HKLM\OfflineSoftware\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f 
