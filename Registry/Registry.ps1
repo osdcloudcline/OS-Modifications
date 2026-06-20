@@ -139,4 +139,10 @@ reg add "HKLM\OfflineSystem\ControlSet001\Services\WinDefend" /v Start /t REG_DW
 reg unload HKLM\OfflineSystem
 reg unload HKLM\OfflineSoftware
 
+reg load HKLM\OfflineSoftware "$Mount\Windows\System32\config\SOFTWARE"
+
+reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "EnabledState" /t REG_DWORD /d 1 /f
+reg add "HKLM\OfflineSoftware\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "StateOptions" /t REG_DWORD /d 1 /f
+
+reg unload HKLM\OfflineSoftware
 
