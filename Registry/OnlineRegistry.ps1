@@ -121,6 +121,6 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection"
 
 reg add "HKLM\SYSTEM\ControlSet001\Services\WinDefend" /v Start /t REG_DWORD /d 4 /f
 
-
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "EnabledState" /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\FeatureManagement\Overrides\0\47205210" /v "StateOptions" /t REG_DWORD /d 1 /f
+Write-Host "Reverting back to legacy Windows 11 Start Menu..." -ForegroundColor Cyan
+Write-Host
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoStartMenuMorePrograms /t REG_DWORD /d 1 /f
